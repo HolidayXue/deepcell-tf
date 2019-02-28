@@ -31,7 +31,7 @@ from __future__ import division
 
 from tensorflow.python.keras.callbacks import Callback
 
-from deepcell.utils.retinanet_anchor_utils import evaluate
+from deepcell.utils.retinanet_anchor_utils import evaluate, evaluate_mask
 
 
 class RedirectModel(Callback):
@@ -121,8 +121,11 @@ class Evaluate(Callback):
     def on_epoch_end(self, epoch, logs=None):
         logs = logs or {}
 
+        # define evaluate function based on generator.include_masks
+        E = evaluate_mask if generator.inclue_masks else evaluate
+
         # run evaluation
-        avg_precisions = evaluate(
+        avg_precisions = E(
             self.generator,
             self.model,
             iou_threshold=self.iou_threshold,
