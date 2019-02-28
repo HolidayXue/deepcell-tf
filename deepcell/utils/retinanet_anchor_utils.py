@@ -570,8 +570,8 @@ def _get_detections(generator,
                       for j in range(generator.y.shape[0])]
 
     # store masks if generator.include_masks is True
-    all_masks = [[None for i in range(generator.num_classes())]
-                 for j in range(generator.size())]
+    all_masks = [[None for i in range(generator.num_classes)]
+                 for j in range(generator.y.shape[0])]
 
     for i in range(generator.y.shape[0]):
         # raw_image = generator.load_image(i)
@@ -786,13 +786,13 @@ def evaluate_mask(generator,
     # pickle.dump(all_gt_masks, open('all_gt_masks.pkl', 'wb'))
 
     # process detections and annotations
-    for label in range(generator.num_classes()):
+    for label in range(generator.num_classes):
         false_positives = np.zeros((0,))
         true_positives = np.zeros((0,))
         scores = np.zeros((0,))
         num_annotations = 0.0
 
-        for i in range(generator.size()):
+        for i in range(generator.y.shape[0]):
             detections = all_detections[i][label]
             masks = all_masks[i][label]
             annotations = all_annotations[i][label]
