@@ -618,7 +618,7 @@ def _get_detections(generator,
 
     if generator.include_masks:
         return all_detections, all_masks
-    return all_detections
+    return all_detections, None
 
 
 def _get_annotations(generator):
@@ -656,7 +656,7 @@ def _get_annotations(generator):
 
     if generator.include_masks:
         return all_annotations, all_masks
-    return all_annotations
+    return all_annotations, None
 
 
 def evaluate(generator,
@@ -677,12 +677,12 @@ def evaluate(generator,
         A dict mapping class names to mAP scores.
     """
     # gather all detections and annotations
-    all_detections = _get_detections(
+    all_detections, _ = _get_detections(
         generator, model,
         score_threshold=score_threshold,
         max_detections=max_detections)
 
-    all_annotations = _get_annotations(generator)
+    all_annotations, _ = _get_annotations(generator)
     average_precisions = {}
 
     # all_detections = pickle.load(open('all_detections.pkl', 'rb'))
